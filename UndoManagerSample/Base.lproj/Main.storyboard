@@ -1,24 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="haq-8X-SVU">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--UndoManager-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="UndoManager" id="BYZ-38-t0r" customClass="ViewController" customModule="UndoManagerSample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jtl-8s-DTR">
+                                <rect key="frame" x="0.0" y="88" width="375" height="150"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Color" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pSC-pu-OdR">
+                                        <rect key="frame" x="131" y="64.666666666666657" width="113" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="pSC-pu-OdR" firstAttribute="centerX" secondItem="Jtl-8s-DTR" secondAttribute="centerX" id="RRT-Tf-qgK"/>
+                                    <constraint firstItem="pSC-pu-OdR" firstAttribute="centerY" secondItem="Jtl-8s-DTR" secondAttribute="centerY" id="bCO-Kq-irL"/>
+                                    <constraint firstAttribute="height" constant="150" id="l21-bm-47t"/>
+                                </constraints>
+                            </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="24h-0f-nGr">
+                                <rect key="frame" x="20" y="268" width="335" height="29"/>
+                                <segments>
+                                    <segment title="White"/>
+                                    <segment title="Red"/>
+                                    <segment title="Green"/>
+                                    <segment title="Blue"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedControlValueChangedAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="tgq-ra-FSi"/>
+                                </connections>
+                            </segmentedControl>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="J5w-fZ-pnk">
+                                <rect key="frame" x="18" y="326" width="339" height="31"/>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rnq-84-c6I">
+                                <rect key="frame" x="20" y="416" width="335" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Rnq-84-c6I" secondAttribute="trailing" constant="20" id="I0O-Tp-TqT"/>
+                            <constraint firstItem="Rnq-84-c6I" firstAttribute="top" secondItem="J5w-fZ-pnk" secondAttribute="bottom" constant="60" id="KLv-FG-k96"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="24h-0f-nGr" secondAttribute="trailing" constant="20" id="KZQ-4o-wVX"/>
+                            <constraint firstItem="Jtl-8s-DTR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Obr-fF-qyv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="J5w-fZ-pnk" secondAttribute="trailing" constant="20" id="QpM-D5-zZG"/>
+                            <constraint firstItem="J5w-fZ-pnk" firstAttribute="top" secondItem="24h-0f-nGr" secondAttribute="bottom" constant="30" id="UK1-lA-Va8"/>
+                            <constraint firstItem="J5w-fZ-pnk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="d9f-Yf-5lr"/>
+                            <constraint firstItem="24h-0f-nGr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="fBC-IP-cnu"/>
+                            <constraint firstItem="Jtl-8s-DTR" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fHt-Qy-oYW"/>
+                            <constraint firstItem="Jtl-8s-DTR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="h7c-tr-4ih"/>
+                            <constraint firstItem="24h-0f-nGr" firstAttribute="top" secondItem="Jtl-8s-DTR" secondAttribute="bottom" constant="30" id="iDo-6U-rTA"/>
+                            <constraint firstItem="Rnq-84-c6I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="kgU-tq-M0b"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" title="UndoManager" id="ytr-iV-IVo">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="redo" id="HkT-Yp-NsU">
+                                <connections>
+                                    <action selector="redoButtonAction:" destination="BYZ-38-t0r" id="MSs-op-Kez"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="undo" id="zdN-4U-ogK">
+                                <connections>
+                                    <action selector="undoButtonAction:" destination="BYZ-38-t0r" id="0a9-RB-WLy"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="colorView" destination="Jtl-8s-DTR" id="I0q-p9-7aX"/>
+                        <outlet property="label" destination="Rnq-84-c6I" id="aJY-MK-Q6G"/>
+                        <outlet property="redoButtonItem" destination="HkT-Yp-NsU" id="iLJ-pk-agN"/>
+                        <outlet property="segmentedControl" destination="24h-0f-nGr" id="L2m-fm-0i9"/>
+                        <outlet property="slider" destination="J5w-fZ-pnk" id="ld3-hX-KDl"/>
+                        <outlet property="undoButtonItem" destination="zdN-4U-ogK" id="e1h-Lf-1A4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1080.8" y="137.4384236453202"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8h5-Ze-RBY">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="haq-8X-SVU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="QHZ-qT-AOa">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="JXp-Yr-eFI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="agW-aV-1z4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="276" y="137"/>
         </scene>
     </scenes>
 </document>
