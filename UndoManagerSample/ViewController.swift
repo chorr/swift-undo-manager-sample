@@ -36,8 +36,8 @@ class ViewController: UIViewController {
         synchronizeProject()
         updateUndoButtonsStatus()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUndoButtonsStatus), name: .NSUndoManagerDidUndoChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUndoButtonsStatus), name: .NSUndoManagerDidRedoChange, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateUndoButtonsStatus), name: .NSUndoManagerDidUndoChange, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateUndoButtonsStatus), name: .NSUndoManagerDidRedoChange, object: nil)
     }
 
     private func synchronizeProject() {
@@ -47,18 +47,20 @@ class ViewController: UIViewController {
     }
 
     @objc private func updateUndoButtonsStatus() {
-        undoButtonItem.isEnabled = undoManager?.canUndo ?? false
-        redoButtonItem.isEnabled = undoManager?.canRedo ?? false
+        DispatchQueue.main.async {
+            self.undoButtonItem.isEnabled = self.undoManager?.canUndo ?? false
+            self.redoButtonItem.isEnabled = self.undoManager?.canRedo ?? false
+        }
     }
 
     @IBAction func undoButtonAction(_ sender: Any) {
+        label.text = undoManager?.undoMenuItemTitle
         undoManager?.undo()
-        label.text = undoManager?.undoActionName
     }
 
     @IBAction func redoButtonAction(_ sender: Any) {
+        label.text = undoManager?.redoMenuItemTitle
         undoManager?.redo()
-        label.text = undoManager?.redoActionName
     }
 
     @IBAction func segmentedControlValueChangedAction(_ sender: UISegmentedControl) {
@@ -74,6 +76,7 @@ extension ViewController {
         let oldColor = project.color
         undoManager?.registerUndo(withTarget: self, handler: { (targetSelf) in
             targetSelf.setColorViewBackgroundColor(oldColor)
+            targetSelf.segmentedControl.selectedSegmentIndex = targetSelf.colors.index(of: oldColor) ?? 0
         })
         undoManager?.setActionName("Color")
 
