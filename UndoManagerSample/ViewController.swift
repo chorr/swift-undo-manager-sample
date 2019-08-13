@@ -11,6 +11,19 @@ import UIKit
 struct Project {
     var color: UIColor = .black
     var opacity: Float = 1
+
+    var colorName: String {
+        switch self.color {
+        case .red:
+            return "Red"
+        case .green:
+            return "Green"
+        case .blue:
+            return "Blue"
+        default:
+            return "Black"
+        }
+    }
 }
 
 class ViewController: UIViewController {
@@ -78,7 +91,7 @@ extension ViewController {
             targetSelf.setColorViewBackgroundColor(oldColor)
             targetSelf.segmentedControl.selectedSegmentIndex = targetSelf.colors.index(of: oldColor) ?? 0
         })
-        undoManager?.setActionName("Color")
+        undoManager?.setActionName("Color : \(project.colorName)")
 
         project.color = color
         synchronizeProject()
