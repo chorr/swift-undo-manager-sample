@@ -38,7 +38,7 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="24h-0f-nGr">
                                 <rect key="frame" x="20" y="268" width="335" height="29"/>
                                 <segments>
-                                    <segment title="White"/>
+                                    <segment title="Black"/>
                                     <segment title="Red"/>
                                     <segment title="Green"/>
                                     <segment title="Blue"/>
@@ -49,6 +49,9 @@
                             </segmentedControl>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="J5w-fZ-pnk">
                                 <rect key="frame" x="18" y="326" width="339" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueChangedAction:event:" destination="BYZ-38-t0r" eventType="valueChanged" id="gBi-SH-NHZ"/>
+                                </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rnq-84-c6I">
                                 <rect key="frame" x="20" y="416" width="335" height="21"/>

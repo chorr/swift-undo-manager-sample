@@ -38,6 +38,10 @@ class ViewController: UIViewController {
     private var project: Project = Project()
     private let colors: [UIColor] = [.black, .red, .green, .blue]
 
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
     override func loadView() {
         super.loadView()
         segmentedControl.selectedSegmentIndex = 0
@@ -49,8 +53,20 @@ class ViewController: UIViewController {
         synchronizeProject()
         updateUndoButtonsStatus()
 
+        // Notification 예시.
 //        NotificationCenter.default.addObserver(self, selector: #selector(updateUndoButtonsStatus), name: .NSUndoManagerDidUndoChange, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(updateUndoButtonsStatus), name: .NSUndoManagerDidRedoChange, object: nil)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        undoManager?.levelsOfUndo = 10
+        becomeFirstResponder()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        resignFirstResponder()
     }
 
     private func synchronizeProject() {
@@ -78,22 +94,51 @@ class ViewController: UIViewController {
 
     @IBAction func segmentedControlValueChangedAction(_ sender: UISegmentedControl) {
         let color = colors[sender.selectedSegmentIndex]
-        setColorViewBackgroundColor(color)
+        setProjectColor(color)
+    }
+
+    @IBAction func sliderValueChangedAction(_ slider: UISlider, event: UIEvent) {
+        guard let touchEvent = event.allTouches?.first else {
+            return
+        }
+        if touchEvent.phase == .began {
+            // Undo 로직 등록.
+            setProjectOpacity(slider.value, oldOpacity: project.opacity)
+        } else {
+            // UI 업데이트만 진행.
+            setProjectOpacity(slider.value, isRegisterUndo: false)
+        }
     }
 }
 
 // MARK: - Undo 동작을 위한 로직
 
 extension ViewController {
-    private func setColorViewBackgroundColor(_ color: UIColor) {
+    private func setProjectColor(_ color: UIColor) {
         let oldColor = project.color
         undoManager?.registerUndo(withTarget: self, handler: { (targetSelf) in
-            targetSelf.setColorViewBackgroundColor(oldColor)
+            targetSelf.setProjectColor(oldColor)
+            // Undo 실행 후 UI 즉시 업데이트.
             targetSelf.segmentedControl.selectedSegmentIndex = targetSelf.colors.index(of: oldColor) ?? 0
         })
         undoManager?.setActionName("Color : \(project.colorName)")
 
         project.color = color
+        synchronizeProject()
+    }
+
+    private func setProjectOpacity(_ opacity: Float, oldOpacity: Float? = nil, isRegisterUndo: Bool = true) {
+        if isRegisterUndo {
+            let oldOpacity = oldOpacity ?? project.opacity
+            undoManager?.registerUndo(withTarget: self, handler: { (targetSelf) in
+                targetSelf.setProjectOpacity(oldOpacity)
+                // Undo 실행 후 UI 즉시 업데이트.
+                targetSelf.slider.value = oldOpacity
+            })
+            undoManager?.setActionName("Opacity : \(project.opacity)")
+        }
+
+        project.opacity = opacity
         synchronizeProject()
     }
 }
