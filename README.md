@@ -55,10 +55,10 @@ func setProjectColor(_ color: UIColor) {
 ## Undo 로직 패턴1
 단순하게 속성 변경이 발생하는 경우.
 ```swift
-func setColor(_ color: UIColor) {
+func setProjectColor(_ color: UIColor) {
     let oldColor = project.color
     undoManager?.registerUndo(withTarget: self, handler: { (targetSelf) in
-        targetSelf.setColorViewBackgroundColor(oldColor)
+        targetSelf.setProjectColor(oldColor)
         // Undo 실행 후 UI 업데이트 필요하다면?
     })
     undoManager?.setActionName("Color : \(project.colorName)")
@@ -69,3 +69,34 @@ func setColor(_ color: UIColor) {
 ```
 
 ## Undo 로직 패턴2
+UISlider 같이 지속적으로 값이 변경될 경우 대응 패턴.
+```swift
+@IBAction func sliderValueChangedAction(_ slider: UISlider, event: UIEvent) {
+    guard let touchEvent = event.allTouches?.first else {
+        return
+    }
+    if touchEvent.phase == .began {
+        // Undo 로직 등록.
+        setProjectOpacity(slider.value, oldOpacity: project.opacity)
+    } else {
+        // UI 업데이트만 진행.
+        setProjectOpacity(slider.value, isRegisterUndo: false)
+    }
+}
+
+func setProjectOpacity(_ opacity: Float, oldOpacity: Float? = nil, isRegisterUndo: Bool = true) {
+    if isRegisterUndo {
+        let oldOpacity = oldOpacity ?? project.opacity
+        undoManager?.registerUndo(withTarget: self, handler: { (targetSelf) in
+            targetSelf.setProjectOpacity(oldOpacity)
+            // Undo 실행 후 UI 즉시 업데이트.
+            targetSelf.slider.value = oldOpacity
+        })
+        undoManager?.setActionName("Opacity : \(project.opacity)")
+    }
+
+    project.opacity = opacity
+    synchronizeProject()
+}
+
+```
