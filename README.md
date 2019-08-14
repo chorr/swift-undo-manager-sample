@@ -100,3 +100,27 @@ func setProjectOpacity(_ opacity: Float, oldOpacity: Float? = nil, isRegisterUnd
 }
 
 ```
+
+## 기기의 Shake 동작으로 Undo 연동
+### Application Main
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    application.applicationSupportsShakeToEdit = true
+    return true
+}
+```
+
+### View Controller
+```swift
+override var canBecomeFirstResponder: Bool {
+    return true
+}
+
+override func viewDidAppear(_ animated: Bool) {
+	becomeFirstResponder()
+}
+
+override func viewWillDisappear(_ animated: Bool) {
+	resignFirstResponder()	
+}	
+```
