@@ -98,11 +98,16 @@ class ViewController: UIViewController {
     }
 
     @IBAction func sliderValueChangedAction(_ slider: UISlider, event: UIEvent) {
-        guard let _ = event.allTouches?.first else {
+        guard let touchEvent = event.allTouches?.first else {
             return
         }
-        project.opacity = slider.value
-        synchronizeProject()
+        if touchEvent.phase == .began {
+            // Undo 로직 등록.
+            setProjectOpacity(slider.value, oldOpacity: project.opacity)
+        } else {
+            // UI 업데이트만 진행.
+            setProjectOpacity(slider.value, isRegisterUndo: false)
+        }
     }
 }
 
@@ -119,6 +124,21 @@ extension ViewController {
         undoManager?.setActionName("Color : \(project.colorName)")
 
         project.color = color
+        synchronizeProject()
+    }
+
+    private func setProjectOpacity(_ opacity: Float, oldOpacity: Float? = nil, isRegisterUndo: Bool = true) {
+        if isRegisterUndo {
+            let oldOpacity = oldOpacity ?? project.opacity
+            undoManager?.registerUndo(withTarget: self, handler: { (targetSelf) in
+                targetSelf.setProjectOpacity(oldOpacity)
+                // Undo 실행 후 UI 즉시 업데이트.
+                targetSelf.slider.value = oldOpacity
+            })
+            undoManager?.setActionName("Opacity : \(project.opacity)")
+        }
+
+        project.opacity = opacity
         synchronizeProject()
     }
 }
